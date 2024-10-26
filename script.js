@@ -13,6 +13,7 @@ const textToTypeElement = document.getElementById("text-to-type");
 const userInputElement = document.getElementById("user-input");
 const resultElement = document.getElementById("result");
 const startButton = document.getElementById("start-button");
+const timerElement = document.getElementById("timer");
 
 // Function to start the typing test
 startButton.addEventListener("click", startTest);
@@ -22,17 +23,19 @@ function startTest() {
     textToTypeElement.textContent = randomText;
     userInputElement.value = '';
     resultElement.textContent = '';
+    timerElement.textContent = '0'; // Reset timer
     userInputElement.focus();
     startTime = Date.now();
     
     // Reset timer
     clearInterval(timerInterval);
-    timerInterval = setInterval(checkTime, 1000);
+    timerInterval = setInterval(updateTimer, 1000);
 }
 
-// Function to check the time and calculate results
-function checkTime() {
+// Function to update the timer
+function updateTimer() {
     const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+    timerElement.textContent = elapsedTime;
     
     if (elapsedTime >= 30) { // 30 seconds limit
         clearInterval(timerInterval);
@@ -54,4 +57,5 @@ function calculateResult() {
     const typingSpeed = Math.round((wordsTyped / timeTaken) * 60);
     
     resultElement.textContent = `Your typing speed is ${typingSpeed} words per minute!`;
+    resultElement.textContent += `\nTotal time: ${timeTaken} seconds.`;
 }
